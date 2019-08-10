@@ -4,6 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -12,12 +13,19 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Configuration
 @Component
 public class WeatherServiceImpl {
+	
+	@Value("${api.url}")
+	String url;
+	
+	@Value("${api.key}")
+	String apiKey;
+	
 	public String getData(String cityName) {
 
 		UriComponentsBuilder queryBuilder = UriComponentsBuilder
-				.fromHttpUrl("https://samples.openweathermap.org/data/2.5/forecast")
+				.fromHttpUrl(url)
 
-				.queryParam("appid", "b6907d289e10d714a6e88b30761fae22")
+				.queryParam("appid", apiKey)
 
 				.queryParam("q", cityName);
 
