@@ -24,12 +24,12 @@ public class WeatherServiceImpl {
 		RestTemplate restTemplate = new RestTemplate();
 		String res = restTemplate.getForObject(queryBuilder.toUriString(), String.class);
 		System.out.println(res);
-		printWeatherData(res);
-		return res;
+		return printWeatherData(res);
 
 	}
 	
-	private void printWeatherData(String res) {
+	private String printWeatherData(String res) {
+		String output = null;
 		JSONParser parser = new JSONParser();
 		try {
 			JSONObject jsonObj = (JSONObject) parser.parse(res);
@@ -38,18 +38,20 @@ public class WeatherServiceImpl {
 			JSONObject mainObj = (JSONObject) listObj.get("main");
 			double temp = Double.parseDouble(mainObj.get("temp").toString());
 			if(temp > 40.0) {
-				System.out.println("Use Sunscreen!!");
+				output = "Use Sunscreen!!";
 			}
 			
 			JSONArray weatherObjList = (JSONArray) listObj.get("weather");
 			JSONObject weatherObj = (JSONObject) weatherObjList.get(0);
 			String mainWeather = weatherObj.get("main").toString();
 			if(mainWeather.equalsIgnoreCase("Rain"))
-				System.out.println("Carry Umbrella!!");
+				output = "Carry Umbrella!!";
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return output;
 		
 	}
 }
